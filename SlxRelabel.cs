@@ -106,7 +106,10 @@ namespace SlxRelabel
         {
             bool hasChange = false;
             XDocument resDoc = XDocument.Load(f.FullName);
-            foreach (XElement valueNode in resDoc.Element("root").Descendants("data").Descendants("value"))
+            foreach (XElement valueNode in resDoc.Element("root")
+                .Descendants("data")
+                .Where(e => e.Attribute("type") == null || e.Attribute("type").Value == "String")
+                .Descendants("value"))
             {
                 String newValue = valueNode.Value.Replace(from, to);
                 if (newValue != valueNode.Value)
@@ -117,7 +120,8 @@ namespace SlxRelabel
             }
             if (hasChange)
             {
-                using(var w = XmlWriter.Create(f.FullName)){
+                using (var w = XmlWriter.Create(f.FullName, new XmlWriterSettings() { Indent = true }))
+                {                    
                     resDoc.WriteTo(w);
                     return true;
                 }                
