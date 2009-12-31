@@ -29,26 +29,30 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtModelRoot = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtFrom = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtTo = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnRelabel = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.prg = new System.Windows.Forms.ProgressBar();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.txtResults = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // textBox1
+            // txtModelRoot
             // 
-            this.textBox1.Location = new System.Drawing.Point(100, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(460, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "E:\\Projects\\SlxWeb.git\\Model";
-            this.toolTip1.SetToolTip(this.textBox1, "Your \"Model\" folder root.  SlxRelabel will only be able to work on project hosted" +
+            this.txtModelRoot.Location = new System.Drawing.Point(100, 12);
+            this.txtModelRoot.Name = "txtModelRoot";
+            this.txtModelRoot.Size = new System.Drawing.Size(460, 20);
+            this.txtModelRoot.TabIndex = 0;
+            this.txtModelRoot.Text = "E:\\Projects\\SlxWeb.git\\Model";
+            this.toolTip1.SetToolTip(this.txtModelRoot, "Your \"Model\" folder root.  SlxRelabel will only be able to work on project hosted" +
                     " on the local drive, not in the database VFS.");
             // 
             // label1
@@ -70,12 +74,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Change:";
             // 
-            // textBox2
+            // txtFrom
             // 
-            this.textBox2.Location = new System.Drawing.Point(100, 41);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(144, 20);
-            this.textBox2.TabIndex = 3;
+            this.txtFrom.Location = new System.Drawing.Point(100, 41);
+            this.txtFrom.Name = "txtFrom";
+            this.txtFrom.Size = new System.Drawing.Size(144, 20);
+            this.txtFrom.TabIndex = 3;
             // 
             // label3
             // 
@@ -86,12 +90,12 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Into:";
             // 
-            // textBox3
+            // txtTo
             // 
-            this.textBox3.Location = new System.Drawing.Point(100, 69);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(144, 20);
-            this.textBox3.TabIndex = 5;
+            this.txtTo.Location = new System.Drawing.Point(100, 69);
+            this.txtTo.Name = "txtTo";
+            this.txtTo.Size = new System.Drawing.Size(144, 20);
+            this.txtTo.TabIndex = 5;
             // 
             // label4
             // 
@@ -106,36 +110,75 @@
             // 
             // btnRelabel
             // 
-            this.btnRelabel.Location = new System.Drawing.Point(437, 53);
+            this.btnRelabel.Location = new System.Drawing.Point(437, 44);
             this.btnRelabel.Name = "btnRelabel";
             this.btnRelabel.Size = new System.Drawing.Size(75, 23);
             this.btnRelabel.TabIndex = 7;
             this.btnRelabel.Text = "Re Label!";
             this.btnRelabel.UseVisualStyleBackColor = true;
+            this.btnRelabel.Click += new System.EventHandler(this.btnRelabel_Click);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 137);
+            this.label5.Location = new System.Drawing.Point(15, 132);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(328, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "Note: non-localized strings in custom smart parts will not be affected.";
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            // 
+            // prg
+            // 
+            this.prg.Location = new System.Drawing.Point(13, 154);
+            this.prg.Name = "prg";
+            this.prg.Size = new System.Drawing.Size(547, 23);
+            this.prg.TabIndex = 9;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Enabled = false;
+            this.btnCancel.Location = new System.Drawing.Point(437, 73);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 10;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // txtResults
+            // 
+            this.txtResults.Location = new System.Drawing.Point(13, 184);
+            this.txtResults.Multiline = true;
+            this.txtResults.Name = "txtResults";
+            this.txtResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtResults.Size = new System.Drawing.Size(547, 243);
+            this.txtResults.TabIndex = 11;
+            // 
             // SlxRelabel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 159);
+            this.ClientSize = new System.Drawing.Size(572, 439);
+            this.Controls.Add(this.txtResults);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.prg);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnRelabel);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.txtTo);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtFrom);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtModelRoot);
             this.Name = "SlxRelabel";
             this.Text = "Relabel";
             this.ResumeLayout(false);
@@ -145,16 +188,20 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtModelRoot;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtFrom;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtTo;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnRelabel;
         private System.Windows.Forms.Label label5;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.ProgressBar prg;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.TextBox txtResults;
     }
 }
 
